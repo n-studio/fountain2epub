@@ -8,6 +8,10 @@ fountain2epub [command] <options>
 Example:
 
     fountain2epub -i myscript.fountain -o myscript.epub
+
+To perform a conversion, both an input, and an output file must be specified
+with the -i, and -o commands, respectively. The input file must be a valid
+Fountain script, and the output path cannot point to an existing file.
 `
 
 module.exports = (args) => {
