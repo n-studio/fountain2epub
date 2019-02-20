@@ -1,0 +1,24 @@
+{
+  "name": "fountain2epub",
+  "version": "1.0.0",
+  "description": "A small Node.js library, and command line utility for converting Fountain script documents to EPUB 3",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevincarlson/fountain2epub.git"
+  },
+  "keywords": [
+    "node",
+    "fountain",
+    "epub"
+  ],
+  "author": "Kevin Carlson",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/kevincarlson/fountain2epub/issues"
+  },
+  "homepage": "https://github.com/kevincarlson/fountain2epub#readme"
+}
