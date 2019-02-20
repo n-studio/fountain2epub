@@ -212,7 +212,7 @@ function parse(script, toks, callback) {
       
     var tokens = tokenize(script),
         i = tokens.length,
-        token, title,
+        token, title, author, authors, date, draftDate, copyright,
         title_page = [],
         html = [], output;
 
@@ -223,14 +223,14 @@ function parse(script, toks, callback) {
         switch (token.type) {
             case 'title': title_page.push('<h1>' + token.text + '</h1>'); title = token.text.replace('<br />', ' ').replace(/<(?:.|\n)*?>/g, ''); break;
             case 'credit': title_page.push('<p class=\"credit\">' + token.text + '</p>'); break;
-            case 'author': title_page.push('<p class=\"authors\">' + token.text + '</p>'); break;
-            case 'authors': title_page.push('<p class=\"authors\">' + token.text + '</p>'); break;
+            case 'author': title_page.push('<p class=\"authors\">' + token.text + '</p>'); author = token.text.replace('<br />', ' ').replace(/<(?:.|\n)*?>/g, ''); break;
+            case 'authors': title_page.push('<p class=\"authors\">' + token.text + '</p>'); authors = token.text.replace('<br />', ' ').replace(/<(?:.|\n)*?>/g, ''); break;
             case 'source': title_page.push('<p class=\"source\">' + token.text + '</p>'); break;
             case 'notes': title_page.push('<p class=\"notes\">' + token.text + '</p>'); break;
-            case 'draft_date': title_page.push('<p class=\"draft-date\">' + token.text + '</p>'); break;
-            case 'date': title_page.push('<p class=\"date\">' + token.text + '</p>'); break;
+            case 'draft_date': title_page.push('<p class=\"draft-date\">' + token.text + '</p>'); draftDate = token.text.replace('<br />', ' ').replace(/<(?:.|\n)*?>/g, ''); break;
+            case 'date': title_page.push('<p class=\"date\">' + token.text + '</p>'); date = token.text.replace('<br />', ' ').replace(/<(?:.|\n)*?>/g, ''); break;
             case 'contact': title_page.push('<p class=\"contact\">' + token.text + '</p>'); break;
-            case 'copyright': title_page.push('<p class=\"copyright\">' + token.text + '</p>'); break;
+            case 'copyright': title_page.push('<p class=\"copyright\">' + token.text + '</p>'); copyright = token.text.replace('<br />', ' ').replace(/<(?:.|\n)*?>/g, ''); break;
 
             case 'scene_heading': html.push('<h3' + (token.scene_number ? ' id=\"' + token.scene_number + '\">' : '>') + token.text + '</h3>'); break;
             case 'transition': html.push('<h2>' + token.text + '</h2>'); break;
@@ -258,7 +258,7 @@ function parse(script, toks, callback) {
         }
     }
 
-    output = { title: title, html: { title_page: title_page.join(''), script: html.join('') }, tokens: toks ? tokens.reverse() : undefined };
+    output = { title: title, author: author, authors: authors, date: date, draftDate: draftDate, rights: copyright, html: { title_page: title_page.join(''), script: html.join('') }, tokens: toks ? tokens.reverse() : undefined };
 
     if (typeof callback === 'function') {
         return callback(output);

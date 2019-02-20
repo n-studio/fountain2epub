@@ -25,6 +25,9 @@
   },
   "homepage": "https://github.com/kevincarlson/fountain2epub#readme",
   "dependencies": {
-    "minimist": "^1.2.0"
+    "adm-zip": "^0.4.13",
+    "dateformat": "^3.0.3",
+    "minimist": "^1.2.0",
+    "tmp": "0.0.33"
   }
 }

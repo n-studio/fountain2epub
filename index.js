@@ -14,17 +14,9 @@ module.exports = () => {
     }
 
     switch(cmd) {
-        case 'version':
-            require('./cmd/version')(args);
-            break;
-        case 'help' :
-            require('./cmd/help')(args);
-            break;
-        case 'convert':
-            require('./cmd/convert')(args);
-            break;
-        default:
-            console.log(`Argument "${cmd}" not recognized. Try fountain2epub -h for more information.`);
-            break;
+        case 'version': require('./cmd/version')(args); break;
+        case 'help': require('./cmd/help')(args); break;
+        case 'convert': require('./cmd/convert')(args); break;
+        default: console.log(`Argument "${cmd}" not recognized. Try fountain2epub -h for more information.`); break;
     }
 }
