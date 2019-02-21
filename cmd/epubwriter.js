@@ -9,7 +9,7 @@ const DECLARATION = '<?xml version="1.0" encoding="UTF-8"?>';
 const PACKAGE_PATH = 'EPUB/package.opf';
 
 function writePackageDocument(contents, metadata, folder) {
-    const packageTagOpen = '<package version="3.0" unique-identifier="uid">';
+    const packageTagOpen = '<package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifier="uid">';
     const packageTagClose = '</package>';
     let pkg = DECLARATION + packageTagOpen + getMetadataElement(metadata) + generateManifest(contents) + generateSpine(contents) + packageTagClose;
 
@@ -37,6 +37,7 @@ function getManifestItems(contents) {
     let result = '';
     let item = '';
     let type = '';
+    let properties = '';
 
     contents.forEach(element => {
         switch (element.type) {
@@ -44,7 +45,13 @@ function getManifestItems(contents) {
             case 'css': type = 'text/css'; break;
         }
 
-        item = '<item id="' + element.id + '" href="' + element.id + '.' + element.type + '" media-type="' + type + '"/>';
+        if (element.properties !== undefined) {
+            properties = ' properties="' + element.properties + '"';
+        } else {
+            properties = '';
+        }
+
+        item = '<item id="' + element.id + '" href="' + element.id + '.' + element.type + '" media-type="' + type + '"' + properties + '/>';
         result = result + item;
     });
 
@@ -72,10 +79,6 @@ function generateSpine(contents) {
     return '<spine>' + getSpineItems(contents) + '</spine>';
 }
 
-function writeMimetype(path) {
-    fs.writeFileSync(path, MIMETYPE);
-}
-
 function writeContainerFile(path) {
     fs.writeFileSync(path, '<container xmlns="urn:oasis:names:tc:opendocument:xmlns:container" version="1.0"><rootfiles><rootfile full-path="' + PACKAGE_PATH + '" media-type="application/oebps-package+xml"/></rootfiles></container>');
 }
@@ -94,7 +97,6 @@ function createEpubFileStructure(folder) {
     fs.mkdirSync(folder + CONTENT_FOLDER);
     fs.mkdirSync(folder + '/META-INF');
 
-    writeMimetype(folder + '/mimetype');
     writeContainerFile(folder + '/META-INF/container.xml');
 }
 
@@ -103,10 +105,13 @@ module.exports = (filepath, epubContents, metadata) => {
     let tmpdir = tmpobj.name;
     let zip = new AdmZip();
 
+    zip.addFile('mimetype', MIMETYPE);
+
     createEpubFileStructure(tmpdir);
     writePackageDocument(epubContents, metadata, tmpdir);
     writeEpubContents(tmpdir, epubContents);
 
     zip.addLocalFolder(tmpdir);
     zip.writeZip(filepath);
+    console.log('File written!');
 }

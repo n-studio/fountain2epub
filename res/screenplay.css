@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Styling for the Screenplay format
+ *  Responsive Styling for Screenplays
  *  Copyright (C) 2013-2019 by Kevin Carlson. All rights reserved.
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a
@@ -52,7 +52,6 @@ h3 {
 }
 
 /* Fountain.js uses h4 for character labels */
-
 h4 {
     font-size: 1em;
     font-weight: normal;
@@ -62,7 +61,7 @@ h4 {
     padding-bottom: 0;
     page-break-after: avoid;
     text-indent: 0;
-    text-transform: uppercase;
+    /*text-transform: uppercase;/* Automatic capitalization disabled, as Fountain supports mixed case character labels */
 }
 
 .parenthetical {

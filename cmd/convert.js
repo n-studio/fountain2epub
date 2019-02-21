@@ -17,6 +17,8 @@ const HTML_HEAD_ELEMENT = '<head><meta charset="utf-8"/><title></title><link rel
 const HTML_BODY_TAG_OPEN = '<body>';
 const HTML_BODY_TAG_CLOSE = '</body>';
 
+const NAV_DOCUMENT_CONTENTS = '<nav epub:type="toc" id="toc"><h1 class="title">Table of Contents</h1><ol><li id="ttl"><a href="titlepage.xhtml">Title Page</a></li><li id="script"><a href="script.xhtml">Script</a></li><li id="nav"><a href="nav.xhtml">Table of Contents</a></li></ol></nav><nav epub:type="landmarks" hidden=""><h2>Guide</h2><ol><li><a epub:type="toc" href="#toc">Table of Contents</a></li><li><a epub:type="cover" href="titlepage.xhtml">Title Page</a></li><li><a epub:type="bodymatter" href="script.xhtml">Script</a></li></ol></nav>'
+
 function validateArguments(input, output) {
     let result = true;
 
@@ -61,6 +63,13 @@ function generateContents(scriptObject) {
         'id': 'script',
         'type': 'xhtml',
         'fileContents': buildHtmlFile(scriptObject.html.script)
+    });
+
+    contents.push({
+        'id': 'nav',
+        'type': 'xhtml',
+        'fileContents': buildHtmlFile(NAV_DOCUMENT_CONTENTS),
+        'properties': 'nav'
     });
 
     contents.push({
