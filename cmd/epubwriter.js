@@ -104,6 +104,17 @@ function createEpubFileStructure(folder) {
     writeContainerFile(folder + '/META-INF/container.xml');
 }
 
+function addAppleDisplayOptions(folder) {
+    const fileContents = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <display_options>
+    <platform name="*">
+    <option name="specified-fonts">true</option>
+    </platform>
+    </display_options>`;
+
+    fs.writeFileSync(folder + '/META-INF/com.apple.ibooks.display-options.xml', fileContents);
+}
+
 module.exports = (filepath, epubContents, metadata) => {
     let tmpobj = tmp.dirSync();
     let tmpdir = tmpobj.name;
@@ -112,8 +123,8 @@ module.exports = (filepath, epubContents, metadata) => {
     createEpubFileStructure(tmpdir);
     writePackageDocument(epubContents, metadata, tmpdir);
     writeEpubContents(tmpdir, epubContents);
+    addAppleDisplayOptions(tmpdir);
 
     zip.addLocalFolder(tmpdir);
     zip.writeZip(filepath);
-    console.log('File written!');
 }
