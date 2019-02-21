@@ -2,7 +2,6 @@ const fs = require('fs');
 const AdmZip = require('adm-zip');
 const tmp = require('tmp');
 
-const MIMETYPE = 'application/epub+zip';
 const CONTENT_FOLDER = '/EPUB';
 
 const DECLARATION = '<?xml version="1.0" encoding="UTF-8"?>';
@@ -28,7 +27,7 @@ function getMetadataElement(metadata) {
     return '<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">' + 
            '<dc:identifier id="uid">' + metadata.title + metadata.modified + '</dc:identifier>' +
            '<dc:title>' + metadata.title + '</dc:title>' +
-           '<dc:language>en</dc:language>' + // TODO: figure out a workable solution for this
+           '<dc:language>en</dc:language>' + // TODO: don't hard code that!
            '<meta property="dcterms:modified">' + metadata.modified + '</meta>' +
            optionalTags + '</metadata>';
 }
@@ -43,6 +42,7 @@ function getManifestItems(contents) {
         switch (element.type) {
             case 'xhtml': type = 'application/xhtml+xml'; break;
             case 'css': type = 'text/css'; break;
+            case 'otf': type = 'application/vnd.ms-opentype'; break;
         }
 
         if (element.properties !== undefined) {
@@ -88,7 +88,11 @@ function writeEpubContents(folder, contents) {
 
     contents.forEach(element => {
         filepath = folder + CONTENT_FOLDER + '/' + element.id + '.' + element.type;
-        fs.writeFileSync(filepath, element.fileContents);
+        if (element.contentsInline) {
+            fs.writeFileSync(filepath, element.fileContents);
+        } else {
+            fs.copyFileSync(element.path, filepath);
+        }
     });
 
 }
@@ -103,9 +107,7 @@ function createEpubFileStructure(folder) {
 module.exports = (filepath, epubContents, metadata) => {
     let tmpobj = tmp.dirSync();
     let tmpdir = tmpobj.name;
-    let zip = new AdmZip();
-
-    zip.addFile('mimetype', MIMETYPE);
+    let zip = new AdmZip('../res/base.epub');
 
     createEpubFileStructure(tmpdir);
     writePackageDocument(epubContents, metadata, tmpdir);

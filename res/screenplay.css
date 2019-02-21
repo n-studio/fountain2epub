@@ -21,10 +21,38 @@
  *  DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 
- body {
+ @font-face {
+    font-family: 'Tex Gyre Cursor';
+    font-weight: normal;
+    font-style: normal;
+    src:url(texgyrecursor-regular.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Tex Gyre Cursor';
+    font-weight: bold;
+    font-style: normal;
+    src:url(texgyrecursor-bold.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Tex Gyre Cursor';
+    font-weight: normal;
+    font-style: italic;
+    src:url(texgyrecursor-italic.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Tex Gyre Cursor';
+    font-weight: bold;
+    font-style: italic;
+    src:url(texgyrecursor-bolditalic.otf) format('opentype');
+}
+
+body {
     background-color: #fff;
     color: #000;
-    font-family: "Courier", "Courier New", monospace;
+    font-family: "Tex Gyre Cursor", monospace;
     font-size: 1em;
     margin-bottom: 20px;
     margin-left: 30px;
